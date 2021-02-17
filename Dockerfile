@@ -1,5 +1,5 @@
 ############################
-# Install PHP Dependencies
+# Install PHP Dependencies 
 FROM composer:1.10 as vendor
 
 WORKDIR /app
