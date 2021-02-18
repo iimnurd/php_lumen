@@ -34,7 +34,6 @@ spec:
             # Use standard 8000 port for all system as much as possible
             - containerPort: 8000
           resources:
-            Give appropriate number
             requests:
               memory: "32Mi" 
               cpu: "200m"

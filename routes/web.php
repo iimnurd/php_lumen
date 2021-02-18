@@ -16,9 +16,8 @@ use Illuminate\Http\Request;
 
 // $router->post('/webhook', ['uses' =>
 //     'WebhookController@receiveRequest']);
-$router->post('/foo', function (Request $req) {
-  $rawPostData = file_get_contents("php://input");
-var_dump($rawPostData);
+$router->post('/health', function (Request $req) {
+  http_response_code(200);
 });
 $router->post('/webhook','WebhookController@receiveRequest');
 /*
