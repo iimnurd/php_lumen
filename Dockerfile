@@ -5,7 +5,7 @@ RUN useradd -u 1000 -ms /bin/bash -g www www
 
 
 # Copy vendor from composer
-COPY --chown=www:www --from=vendor /app/vendor/ /var/www/vendor/
+#COPY --chown=www:www --from=vendor /app/vendor/ /var/www/vendor/
 # Copy manifest that mapping all assets from frontend
 # COPY --chown=www:www --from=frontend /app/mix-manifest.json /var/www/public/mix-manifest.json
 # Copy existing application 

@@ -22,7 +22,7 @@ spec:
           path: /code
       containers:
       - name: php
-        image: iimnd/lumen-app:0.1.0
+        image: iimnd/lumen-app:0.1.1
         volumeMounts:
         - name: dir
           mountPath: /code
