@@ -13,6 +13,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: php
+                name: nginx
                 port:
-                  number: 9000
+                  number: 80

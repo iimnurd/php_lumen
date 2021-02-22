@@ -18,9 +18,6 @@ spec:
         tier: backend
     spec:
       volumes:
-      - name: dir
-        hostPath:
-          path: /code
       - name: config
         configMap:
           name: nginx-config
@@ -31,8 +28,6 @@ spec:
       - name: nginx
         image: nginx
         volumeMounts:
-        - name: dir
-          mountPath: /code
         - name: config
           mountPath: /etc/nginx/conf.d
         ports:

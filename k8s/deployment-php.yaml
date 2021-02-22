@@ -16,8 +16,16 @@ spec:
         app: php
         tier: backend
     spec:
-      
+      volumes:
+      - name: config
+        configMap:
+          name: lumen-app-env
+            
       containers:
       - name: php
         image: iimnd/lumen-app:0.1.2
+        volumeMounts:
+        - name: config
+          mountPath: /var/www/.env
+          subPath: .env
        

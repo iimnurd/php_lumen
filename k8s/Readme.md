@@ -1,7 +1,6 @@
 ## How to Install using helm
+Flow : Outside -> nginx-ingress kubernetes -> nginx-service -> php
 
-Helm install -f helm-dev-env.yaml golang_app ./golang
+key :
+php fcgi : https://github.com/tegarimansyah/laravel-in-kubernetes/tree/main/webapp/deploy
 
-
-### Upgrade 
-Helm upgrade -f helm-dev-env.yaml golang_app ./golang

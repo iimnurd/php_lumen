@@ -1,9 +1,10 @@
+#ERROR
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: example-cm
 data:
-  SCRIPT_FILENAME: "/var/www/public$fastcgi_script_name"
+  SCRIPT_FILENAME: "/var/www/public"
 
 ---
 
