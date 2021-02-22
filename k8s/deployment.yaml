@@ -22,7 +22,7 @@ spec:
           path: /code
       containers:
       - name: php
-        image: hirenkavad/laravel-k8:1.5.1
+        image: iimnd/lumen-app:0.1.0
         volumeMounts:
         - name: dir
           mountPath: /code
@@ -36,4 +36,4 @@ spec:
         - cp
         - "-r"
         - "/var/www/."
-        - "/code/app"
+        - "/code/"

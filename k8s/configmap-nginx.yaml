@@ -11,18 +11,26 @@ data:
       error_log  /var/log/nginx/error.log;
       access_log /var/log/nginx/access.log;
       
-      root /code/app/;
-      location / {
-          try_files $uri $uri/ /index.php?$query_string;
-      }
-      
-      location ~ .php$ {
-          try_files $uri =404;
-          fastcgi_split_path_info ^(.+.php)(/.+)$;
-          fastcgi_pass php:9000;
-          fastcgi_index index.php;
-          include fastcgi_params;
-          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-          fastcgi_param PATH_INFO $fastcgi_path_info;
-      }
+      root /code/app/public;
+      location ~ [^/]\.php(/|$) {
+    fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+    if (!-f $document_root$fastcgi_script_name) {
+        return 404;
+    }
+
+    # Mitigate https://httpoxy.org/ vulnerabilities
+    fastcgi_param HTTP_PROXY "";
+
+    fastcgi_pass php:9000;
+    fastcgi_index index.php;
+
+    # include the fastcgi_param setting
+    include fastcgi_params;
+
+    # SCRIPT_FILENAME parameter is used for PHP FPM determining
+    #  the script name. If it is not set in fastcgi_params file,
+    # i.e. /etc/nginx/fastcgi_params or in the parent contexts,
+    # please comment off following line:
+    # fastcgi_param  SCRIPT_FILENAME   $document_root$fastcgi_script_name;
+    }
     }
