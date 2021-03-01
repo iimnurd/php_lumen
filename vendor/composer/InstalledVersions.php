@@ -25,12 +25,12 @@ class InstalledVersions
 private static $installed = array (
   'root' => 
   array (
-    'pretty_version' => 'v5.8.8',
-    'version' => '5.8.8.0',
+    'pretty_version' => 'dev-master',
+    'version' => 'dev-master',
     'aliases' => 
     array (
     ),
-    'reference' => NULL,
+    'reference' => '66ac41bab7b128ffe8ec7c5d848a5737b5110830',
     'name' => 'laravel/lumen',
   ),
   'versions' => 
@@ -328,12 +328,12 @@ private static $installed = array (
     ),
     'laravel/lumen' => 
     array (
-      'pretty_version' => 'v5.8.8',
-      'version' => '5.8.8.0',
+      'pretty_version' => 'dev-master',
+      'version' => 'dev-master',
       'aliases' => 
       array (
       ),
-      'reference' => NULL,
+      'reference' => '66ac41bab7b128ffe8ec7c5d848a5737b5110830',
     ),
     'laravel/lumen-framework' => 
     array (
@@ -392,6 +392,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '181d480e08d9476e61381e04a71b34dc0432e812',
+    ),
+    'opentracing/opentracing' => 
+    array (
+      'pretty_version' => '1.0.1',
+      'version' => '1.0.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '31d2604bd01a1508307b74949fbe1a6683284834',
     ),
     'opis/closure' => 
     array (
@@ -548,8 +557,8 @@ private static $installed = array (
     array (
       'provided' => 
       array (
-        0 => '1.0',
-        1 => '1.0.0',
+        0 => '1.0.0',
+        1 => '1.0',
       ),
     ),
     'psr/simple-cache' => 

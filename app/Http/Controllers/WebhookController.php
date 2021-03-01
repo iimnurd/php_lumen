@@ -4,10 +4,12 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Carbon\Carbon;
 use Log;
+use OpenTracing\Formats;
+use OpenTracing\GlobalTracer;
 
 class WebhookController extends Controller
 {
-
+  
  
   public function getDateFormat()
 {
@@ -43,7 +45,10 @@ public function timeDiff(String $timeA, String $timeB)
 
 
 
-  public function action ($start_time, $data){
+  public function action ($start_time, $data, $parent){
+    $child = GlobalTracer::get()->startSpan('child', [
+      'child_of' => $parent
+  ]);
     #generate random number and save log or db
     $number = $this ->generateNumber(1,1000) ; 
     $response_time= array();
@@ -58,6 +63,13 @@ public function timeDiff(String $timeA, String $timeB)
    
        $resp = response()->json(['id'=> $data['id'], 'number'=> $number , 'response_time'=> $response_time]);
        Log::info('Act Request : '.$resp."\n");
+
+    
+    
+   
+    
+    $child->finish();
+    $parent->finish();
     
     return $resp;
   }
@@ -66,13 +78,31 @@ public function timeDiff(String $timeA, String $timeB)
  
 
   public function forward($start_time, $data){
+    $tracer = GlobalTracer::get();
+
+    $spanContext = $tracer->extract(
+        Formats\HTTP_HEADERS,
+        getallheaders()
+    );
+
+    $span = $tracer->startSpan('lumen_span', ['child_of' => $spanContext]);
+  
+    $client = new Client;
+  
+    $headers = array('Content-Type:application/json');
+  
+    $tracer->inject(
+          $span->getContext(),
+          Formats\HTTP_HEADERS,
+          $headers
+      );
     
     $response_time= array();
     $next_request = array_pop($data['request']);
     
     $ch = curl_init($next_request);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+    curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers));
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
     
     $response = curl_exec($ch);
@@ -109,16 +139,23 @@ public function timeDiff(String $timeA, String $timeB)
 
   public function receiveRequest(Request $request)
   {
+    $parent = GlobalTracer::get()->startSpan('parent');
     $start_time =  microtime(true);
     $random_number = $this ->generateNumber(1,1000); 
     $data = $request->json()->all();
   
     if (count($data['request']) <= 1){
       
-      return $this->action($start_time, $data);
+      return $this->action($start_time, $data, $parent);
     }else{
     return $this->forward($start_time, $data);
     }
+
+  }
+
+  public function health(Request $request)
+  {
+    return response()->json(['message' => 'OK'], 200);
 
   }
 
