@@ -46,13 +46,13 @@ public function timeDiff(String $timeA, String $timeB)
 
 
   public function action ($start_time, $data){
-     $tracer = GlobalTracer::get();
+    //  $tracer = GlobalTracer::get();
 
-    $spanContext = $tracer->extract(
-        Formats\HTTP_HEADERS,
-        getallheaders()
-    );
-    $span = $tracer->startSpan('lumen_span', ['child_of' => $spanContext]);
+    // $spanContext = $tracer->extract(
+    //     Formats\HTTP_HEADERS,
+    //     getallheaders()
+    // );
+    // $span = $tracer->startSpan('lumen_span', ['child_of' => $spanContext]);
     #generate random number and save log or db
     $number = $this ->generateNumber(1,1000) ; 
     $response_time= array();
@@ -68,7 +68,6 @@ public function timeDiff(String $timeA, String $timeB)
        $resp = response()->json(['id'=> $data['id'], 'number'=> $number , 'response_time'=> $response_time]);
        Log::info('Act Request : '.$resp."\n");
 
-       $span->finish();
 
     return $resp;
   }
