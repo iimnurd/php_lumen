@@ -9,8 +9,8 @@ use OpenTracing\GlobalTracer;
 
 class WebhookController extends Controller
 {
-  
- 
+
+
   public function getDateFormat()
 {
   $mytime = Carbon::now();
@@ -45,13 +45,14 @@ public function timeDiff(String $timeA, String $timeB)
 
 
 
-  public function action ($start_time, $data, $spanContext){
-   
+  public function action ($start_time, $data){
+     $tracer = GlobalTracer::get();
 
-
+    $spanContext = $tracer->extract(
+        Formats\HTTP_HEADERS,
+        getallheaders()
+    );
     $span = $tracer->startSpan('lumen_span', ['child_of' => $spanContext]);
-
-
     #generate random number and save log or db
     $number = $this ->generateNumber(1,1000) ; 
     $response_time= array();
@@ -63,48 +64,28 @@ public function timeDiff(String $timeA, String $timeB)
        }else{
       $response_time[getenv('APP_NAME')] = $diff_time;
        }
-   
-       $resp = response()->json(['id'=> $data['id'], 'number'=> $number , 'response_time'=> $response_time]);
-       Log::info('Act Request : '.$resp."\n");    
-   
-    
-    $span->finish();
 
-    
+       $resp = response()->json(['id'=> $data['id'], 'number'=> $number , 'response_time'=> $response_time]);
+       Log::info('Act Request : '.$resp."\n");
+
+       $span->finish();
+
     return $resp;
   }
 
 
- 
+
 
   public function forward($start_time, $data){
-    $tracer = GlobalTracer::get();
 
-    $spanContext = $tracer->extract(
-        Formats\HTTP_HEADERS,
-        getallheaders()
-    );
-
-    $span = $tracer->startSpan('lumen_span', ['child_of' => $spanContext]);
-  
-    // $client = new Client;
-  
-    $headers = array('Content-Type:application/json');
-  
-    $tracer->inject(
-          $span->getContext(),
-          Formats\HTTP_HEADERS,
-          $headers
-      );
-    
     $response_time= array();
     $next_request = array_pop($data['request']);
-    
+
     $ch = curl_init($next_request);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-    
+
     $response = curl_exec($ch);
     if (curl_errno($ch)) {
       $error_msg = curl_error($ch);
@@ -113,25 +94,23 @@ public function timeDiff(String $timeA, String $timeB)
 
     if (isset($error_msg)) {
       $json_re['error'] = $error_msg; 
-      
+
     }else {
-  
+
     $json_re = json_decode($response,true);
     $finish_time = microtime(true);
     $diff_time =  ($finish_time - $start_time)*1000;
-  
+
     if (getenv('DEBUG') == TRUE ){
     $response_time[getenv('APP_NAME')."-forward-".$this->generateNumber()] = $diff_time;
     }else{
     $response_time[getenv('APP_NAME')] = $diff_time;
     }
     $json_re['response_time'] = array_merge($json_re['response_time'],$response_time) ; 
-      
+
   }
     Log::info('FW Request: '.response()->json($json_re)."\n");
     return response()->json($json_re); 
-
-    $span->finish();
 
   }
 
@@ -141,30 +120,16 @@ public function timeDiff(String $timeA, String $timeB)
 
   public function receiveRequest(Request $request)
   {
-    $tracer = GlobalTracer::get();
-
-    $spanContext = $tracer->extract(
-        Formats\HTTP_HEADERS,
-        getallheaders()
-    );
-
-
     $start_time =  microtime(true);
     $random_number = $this ->generateNumber(1,1000); 
     $data = $request->json()->all();
-  
+
     if (count($data['request']) <= 1){
-      
-      return $this->action($start_time, $data, $spanContext);
+
+      return $this->action($start_time, $data);
     }else{
     return $this->forward($start_time, $data);
     }
-
-  }
-
-  public function health(Request $request)
-  {
-    return response()->json(['message' => 'OK'], 200);
 
   }
 

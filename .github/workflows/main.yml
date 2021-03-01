@@ -41,7 +41,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: iimnd/lumen-app:0.1.4 #aman 2
+          tags: iimnd/lumen-app:0.1.5 #aman 2
           
       -
         name: Image digest
