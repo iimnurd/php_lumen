@@ -23,7 +23,7 @@ spec:
             
       containers:
       - name: php
-        image: iimnd/lumen-app:0.1.2
+        image: iimnd/lumen-app:0.1.3
         volumeMounts:
         - name: config
           mountPath: /var/www/.env

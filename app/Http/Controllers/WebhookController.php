@@ -45,10 +45,13 @@ public function timeDiff(String $timeA, String $timeB)
 
 
 
-  public function action ($start_time, $data, $parent){
-    $child = GlobalTracer::get()->startSpan('child', [
-      'child_of' => $parent
-  ]);
+  public function action ($start_time, $data, $spanContext){
+   
+
+
+    $span = $tracer->startSpan('lumen_span', ['child_of' => $spanContext]);
+
+
     #generate random number and save log or db
     $number = $this ->generateNumber(1,1000) ; 
     $response_time= array();
@@ -62,14 +65,11 @@ public function timeDiff(String $timeA, String $timeB)
        }
    
        $resp = response()->json(['id'=> $data['id'], 'number'=> $number , 'response_time'=> $response_time]);
-       Log::info('Act Request : '.$resp."\n");
-
-    
-    
+       Log::info('Act Request : '.$resp."\n");    
    
     
-    $child->finish();
-    $parent->finish();
+    $span->finish();
+
     
     return $resp;
   }
@@ -87,7 +87,7 @@ public function timeDiff(String $timeA, String $timeB)
 
     $span = $tracer->startSpan('lumen_span', ['child_of' => $spanContext]);
   
-    $client = new Client;
+    // $client = new Client;
   
     $headers = array('Content-Type:application/json');
   
@@ -131,6 +131,8 @@ public function timeDiff(String $timeA, String $timeB)
     Log::info('FW Request: '.response()->json($json_re)."\n");
     return response()->json($json_re); 
 
+    $span->finish();
+
   }
 
 
@@ -139,14 +141,21 @@ public function timeDiff(String $timeA, String $timeB)
 
   public function receiveRequest(Request $request)
   {
-    $parent = GlobalTracer::get()->startSpan('parent');
+    $tracer = GlobalTracer::get();
+
+    $spanContext = $tracer->extract(
+        Formats\HTTP_HEADERS,
+        getallheaders()
+    );
+
+
     $start_time =  microtime(true);
     $random_number = $this ->generateNumber(1,1000); 
     $data = $request->json()->all();
   
     if (count($data['request']) <= 1){
       
-      return $this->action($start_time, $data, $parent);
+      return $this->action($start_time, $data, $spanContext);
     }else{
     return $this->forward($start_time, $data);
     }
