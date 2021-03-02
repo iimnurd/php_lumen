@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '66ac41bab7b128ffe8ec7c5d848a5737b5110830',
+    'reference' => 'ca49123620225947e5824515f3cc65f01376b0f2',
     'name' => 'laravel/lumen',
   ),
   'versions' => 
@@ -319,6 +319,15 @@ private static $installed = array (
       ),
       'reference' => 'c859919bc3be97a3f114377d5d812f047b8ea90d',
     ),
+    'jonahgeorge/jaeger-client-php' => 
+    array (
+      'pretty_version' => 'v1.1.0',
+      'version' => '1.1.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '845dd1fb0ba0503b168e7884dde95a972dc1ab1b',
+    ),
     'kodova/hamcrest-php' => 
     array (
       'replaced' => 
@@ -333,7 +342,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '66ac41bab7b128ffe8ec7c5d848a5737b5110830',
+      'reference' => 'ca49123620225947e5824515f3cc65f01376b0f2',
     ),
     'laravel/lumen-framework' => 
     array (
@@ -411,6 +420,15 @@ private static $installed = array (
       ),
       'reference' => '943b5d70cc5ae7483f6aff6ff43d7e34592ca0f5',
     ),
+    'packaged/thrift' => 
+    array (
+      'pretty_version' => '0.10.0',
+      'version' => '0.10.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '8af3f4c0388319f65a2522844d80d8ded60d211b',
+    ),
     'phar-io/manifest' => 
     array (
       'pretty_version' => '1.0.3',
@@ -428,6 +446,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '45a2ec53a73c70ce41d55cedef9063630abaf1b6',
+    ),
+    'phlib/base_convert' => 
+    array (
+      'pretty_version' => '1.0.0',
+      'version' => '1.0.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '153ee093e289dfd7e526d4f83df4656bd12caaa9',
     ),
     'phpdocumentor/reflection-common' => 
     array (
@@ -527,6 +554,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '9467db479d1b0487c99733bb1e7944d32deded2c',
+    ),
+    'psr/cache' => 
+    array (
+      'pretty_version' => '1.0.1',
+      'version' => '1.0.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'd11b50ad223250cf17b86e38383413f5a6764bf8',
     ),
     'psr/container' => 
     array (

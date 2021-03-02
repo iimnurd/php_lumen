@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Carbon\Carbon;
 use Log;
-use OpenTracing\Formats;
+use Jaeger\Config;
 use OpenTracing\GlobalTracer;
 
 class WebhookController extends Controller
@@ -119,6 +119,27 @@ public function timeDiff(String $timeA, String $timeB)
 
   public function receiveRequest(Request $request)
   {
+
+    $config = new Config(
+      [
+          'sampler' => [
+              'type' => Jaeger\SAMPLER_TYPE_CONST,
+              'param' => true,
+          ],
+          'logging' => true,
+      ],
+      'your-app-name'
+  );
+  $config->initializeTracer();
+  
+  $tracer = GlobalTracer::get();
+  
+  $scope = $tracer->startActiveSpan('TestSpan', []);
+  $scope->close();
+  
+  $tracer->flush();
+
+  
     
     $start_time =  microtime(true);
     $random_number = $this ->generateNumber(1,1000); 
