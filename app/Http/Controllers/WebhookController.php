@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -7,8 +8,33 @@ use Log;
 use Jaeger\Config;
 use OpenTracing\GlobalTracer;
 
+use Prometheus\CollectorRegistry;
+use Prometheus\RenderTextFormat;
+use Prometheus\Storage\Redis;
+use Prometheus\Storage\InMemory;
+
+
 class WebhookController extends Controller
 {
+ public $registry;
+
+  public function __construct()
+    {
+      \Prometheus\Storage\Redis::setDefaultOptions(
+        [
+            'host' => 'redis',
+            'port' => 6379,
+            'password' => null,
+            'timeout' => 0.1, // in seconds
+            'read_timeout' => '10', // in seconds
+            'persistent_connections' => false
+        ]
+    );
+
+      $this->registry = \Prometheus\CollectorRegistry::getDefault();
+       
+    }
+
 
 
   public function getDateFormat()
@@ -155,6 +181,66 @@ public function timeDiff(String $timeA, String $timeB)
   }
 
 
+  public function getProme(Request $request)
+  {
+$renderer = new RenderTextFormat();
+$result = $renderer->render($this->registry->getMetricFamilySamples());
+
+header('Content-type: ' . RenderTextFormat::MIME_TYPE);
+echo $result;
+  }
+  
+
+  public function get_report(Request $request)
+  {
+
+    $executionStartTime = microtime(true);
+    $count = preg_match('/^[0-9]+$/', $_GET['c'])
+    ? intval($_GET['c'])
+    : floatval($_GET['c']);
+
+    sleep($count);
+    $executionEndTime = microtime(true);
+
+    $seconds = $executionEndTime - $executionStartTime;
+    echo $seconds;
+    $histogram = $this->registry->registerHistogram('myapp', 'process_time', 'it observes', ['type'], [ 1, 2, 5]);
+    $histogram->observe($seconds, ['get_report']);
+    //echo "ok";
+  }
+
+  public function get_trx(Request $request)
+  {
+
+    $executionStartTime = microtime(true);
+    
+    $ch = curl_init(); 
+
+   
+    curl_setopt($ch, CURLOPT_URL, "https://httpstat.us/200?sleep=5000");
+
+    // return the transfer as a string 
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+    $output = curl_exec($ch); 
+
+    curl_close($ch);      
+
+    
+    $executionEndTime = microtime(true);
+
+    $seconds = $executionEndTime - $executionStartTime;
+    echo $seconds;
+    $histogram = $this->registry->registerHistogram('myapp', 'process_time', 'it observes', ['type'], [ 1, 2, 5]);
+    $histogram->observe($seconds, ['get_trx']);
+    //echo "ok";
+  }
+
+
+  public function getFlush(Request $request){
+   echo "flush";
+    
+
+  }
 
 
 

@@ -19,3 +19,15 @@ If you discover a security vulnerability within Lumen, please send an e-mail to 
 ## License
 
 tes The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+
+
+ composer require promphp/prometheus_client_php
+
+
+
+http://localhost:8181/get_report?c=3
+http://localhost:8181/get_trx
+
+http://localhost:8181/metrics

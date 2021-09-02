@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Thrift\\' => array($vendorDir . '/packaged/thrift/src'),
+    'Prometheus\\' => array($vendorDir . '/jimdo/prometheus_client_php/src'),
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
 );

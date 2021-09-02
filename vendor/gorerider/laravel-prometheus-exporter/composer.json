@@ -1,0 +1,37 @@
+{
+    "name": "traum-ferienwohnungen/laravel-prometheus-exporter",
+    "description": "A prometheus exporter for Laravel & Lumen",
+    "keywords": ["laravel", "lumen", "prometheus"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Till Backhaus",
+            "email": "backhaus@traum-ferienwohnungen.de"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "traumferienwohnungen\\PrometheusExporter\\": "src/"
+        }
+    },
+    "require": {
+        "php" : "^7.1",
+        "jimdo/prometheus_client_php": "^0.9.1",
+        "illuminate/support": "^5.6",
+        "fzaninotto/faker": "~1.7"
+    },
+    "require-dev": {
+        "illuminate/http": "^5.6",
+        "phpunit/phpunit": "^7.0",
+        "orchestra/testbench": "~3.6",
+        "mockery/mockery": "^1.1"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "traumferienwohnungen\\PrometheusExporter\\LaravelServiceProvider"
+            ]
+        }
+    }
+}

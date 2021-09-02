@@ -21,6 +21,10 @@ $router->get('/health', function (Request $req) {
   http_response_code(200);
 });
 $router->post('/webhook','WebhookController@receiveRequest');
+$router->get('/metrics','WebhookController@getProme');
+$router->get('/get_trx','WebhookController@get_trx');
+$router->get('/get_report','WebhookController@get_report');
+$router->get('/flush','WebhookController@getFlush');
 /*
 $router->get('/', function () use ($router) {
     return $router->app->version();

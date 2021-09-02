@@ -1,8 +1,8 @@
-FROM php:7.2-fpm
+FROM php:7.4-fpm
 # Add user for laravel application
 RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
-
+RUN pecl install redis-5.3.1 && docker-php-ext-enable redis
 
 # Copy vendor from composer
 #COPY --chown=www:www --from=vendor /app/vendor/ /var/www/vendor/
