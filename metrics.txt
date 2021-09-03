@@ -1,0 +1,19 @@
+# HELP my_app_counter it increases
+# TYPE my_app_counter counter
+my_app_counter{code="200",method="GET",path="get_report",version="v.1.0.0"} 1
+my_app_counter{code="200",method="GET",path="get_trx",version="v.1.0.0"} 1
+# HELP myapp_process_time it observes
+# TYPE myapp_process_time histogram
+myapp_process_time_bucket{code="200",method="GET",path="get_report",version="v.1.0.0",le="1"} 0
+myapp_process_time_bucket{code="200",method="GET",path="get_report",version="v.1.0.0",le="2"} 0
+myapp_process_time_bucket{code="200",method="GET",path="get_report",version="v.1.0.0",le="5"} 2
+myapp_process_time_bucket{code="200",method="GET",path="get_report",version="v.1.0.0",le="+Inf"} 2
+myapp_process_time_count{code="200",method="GET",path="get_report",version="v.1.0.0"} 2
+myapp_process_time_sum{code="200",method="GET",path="get_report",version="v.1.0.0"} 6.0008718967438
+myapp_process_time_bucket{code="200",method="GET",path="get_trx",version="v.1.0.0",le="1"} 0
+myapp_process_time_bucket{code="200",method="GET",path="get_trx",version="v.1.0.0",le="2"} 0
+myapp_process_time_bucket{code="200",method="GET",path="get_trx",version="v.1.0.0",le="5"} 0
+myapp_process_time_bucket{code="200",method="GET",path="get_trx",version="v.1.0.0",le="+Inf"} 1
+myapp_process_time_count{code="200",method="GET",path="get_trx",version="v.1.0.0"} 1
+myapp_process_time_sum{code="200",method="GET",path="get_trx",version="v.1.0.0"} 6.2433700561523
+

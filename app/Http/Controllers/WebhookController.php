@@ -204,8 +204,12 @@ echo $result;
 
     $seconds = $executionEndTime - $executionStartTime;
     echo $seconds;
-    $histogram = $this->registry->registerHistogram('myapp', 'process_time', 'it observes', ['type'], [ 1, 2, 5]);
-    $histogram->observe($seconds, ['get_report']);
+    $histogram = $this->registry->registerHistogram('myapp', 'process_time', 'it observes', ['code','method','path','version'], [ 1, 2, 5]);
+    $histogram->observe($seconds, ['200','GET','get_report','v.1.0.0']);
+
+
+    $counter = $this->registry->registerCounter('my_app', 'counter', 'it increases', ['code','method','path','version']);
+    $counter->incBy(1, ['200','GET','get_report','v.1.0.0']);
     //echo "ok";
   }
 
@@ -230,8 +234,11 @@ echo $result;
 
     $seconds = $executionEndTime - $executionStartTime;
     echo $seconds;
-    $histogram = $this->registry->registerHistogram('myapp', 'process_time', 'it observes', ['type'], [ 1, 2, 5]);
-    $histogram->observe($seconds, ['get_trx']);
+    $histogram = $this->registry->registerHistogram('myapp', 'process_time', 'it observes', ['code','method','path','version'], [ 1, 2, 5]);
+    $histogram->observe($seconds, ['200','GET','get_trx','v.1.0.0']);
+
+    $counter = $this->registry->registerCounter('my_app', 'counter', 'it increases', ['code','method','path','version']);
+    $counter->incBy(1, ['200','GET','get_trx','v.1.0.0']);
     //echo "ok";
   }
 
